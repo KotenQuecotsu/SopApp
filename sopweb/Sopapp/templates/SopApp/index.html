@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{%load static%}
+<head>
+    <title>Дела</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'SopApp/style.css' %}">
+</head>
+<body>
+        <div class = 'tabs'>
+            <ul class = 'tabs__list'>
+                {%for person in latest_Person_list%}
+                <li class="tabs__item"><button id = "id-but-{{person.pk}}"class="tabs__btn" data-tabs-path = {{person.pk}}>{{person.subname}}</button></li>
+                {%endfor%}
+            </ul>   
+            {%for person in latest_Person_list%}
+            
+            <div id="id-{{person.pk}}" class="tabs__content" data-tabs-target="{{person.pk}}">
+                <div class = 'tabs__subcontent--active' pager-path = 0>
+                    <div class="content">
+                        <h2 class="content__title">Дело "{{person.subname}}"</h2>
+                    <div class = 'person_text'>
+                        <a class='person_descr tag'><strong>ФИО: </strong></a><a class='subtag'><em>{{person.name}} </em></a> 
+                        <a class="content__descr tag"><strong>Прозвище:</strong></a><a class="subtag"><em>{{person.subname}}</em></a>
+                        <a class="content__descr tag"><strong>Дата рождения:</strong></a><a class="subtag"><em>{{person.birth_date}}</em></a>
+                    </div>
+                    <div class = 'char_text_box'>
+                        <h3 class = 'personal_chars'>Характеристика</h3>
+                        <p class = 'char_text'>{{person.personal_chars}}</p>
+                        <h2 class="top_secret">[TOP SECRET]</h3>
+                    </div>
+                    </div>
+                    <div class="person_image_box">
+                        <img class="person_image", src ={{person.photo.url}}>
+                    </div>
+                    <button class="tabs__arrow tabs__arrow--next" aria-label="Вперёд", onclick="switchpg()">
+                        &#8594;
+                    </button>
+                </div>
+                <div id = "id-{{person.pk}}" class = 'tabs__subcontent' pager-path = 1>
+                    <div class="'content">
+                        <h2 class = 'content__title'> Статьи</h2>
+                        <p>{{person.breaks|safe}}</p>
+                    </div>   
+                    <button class="tabs__arrow tabs__arrow--prev" aria-label="Назад", onclick="switchpg()">
+                        &#8592;
+                    </button>  
+                </div>
+            </div>
+            {%endfor%}    
+            
+        </div>
+   <script>
+    const one_actives_but = document.getElementById("id-but-0")
+        one_actives_but.classList.remove('tabs__btn')
+        one_actives_but.classList.add('tabs__btn--active');
+
+        const one_actives = document.getElementById("id-0")
+        one_actives.classList.remove('tabs__content')
+        one_actives.classList.add('tabs__content--active');
+        
+   
+
+    function switchpg(){
+        const tabCont = document.querySelector('.tabs__content--active')
+        active = tabCont.querySelector('.tabs__subcontent--active')
+        inactive = tabCont.querySelector('.tabs__subcontent')
+        active.classList.remove('tabs__subcontent--active')
+        active.classList.add('tabs__subcontent')
+        inactive.classList.remove('tabs__subcontent')
+        inactive.classList.add('tabs__subcontent--active')
+    }  
+   </script>
+   <script src="{% static 'SopApp/tabs.js' %}"></script>
+</body>
